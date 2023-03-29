@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IMS Login - Management System</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body id="loginBody">
+	<div class="container">
+		<div class="loginHeader">
+			<h1>IMS</h1>
+			<p>Management System</p>
+		</div>
+		<div class="loginBody">
+            <!-- Button for Students -->
+<button type="button" onclick="showStudentForms()">Student Forms</button>
+
+<!-- Button for Teachers -->
+<button type="button" onclick="showTeacherForms()">Teacher Forms</button>
+
+<script>
+function showStudentForms() {
+  document.getElementById("create-student-form").style.display = "block";
+  document.getElementById("update-student-form").style.display = "block";
+  document.getElementById("delete-student-form").style.display = "block";
+  document.getElementById("show-students-form").style.display ="block";
+  document.getElementById("create-teacher-form").style.display = "none";
+  document.getElementById("update-teacher-form").style.display = "none";
+  document.getElementById("delete-teacher-form").style.display = "none";
+  document.getElementById("show-teachers-form").style.display ="none";
+  document.getElementById("student-list-container").style.display = "block";
+  document.getElementById("teachers-list-container").style.display = "none";
+}
+
+function showTeacherForms() {
+  document.getElementById("create-student-form").style.display = "none";
+  document.getElementById("update-student-form").style.display = "none";
+  document.getElementById("delete-student-form").style.display = "none";
+ document.getElementById("show-students-form").style.display = "none";
+ document.getElementById("student-list-container").style.display = "none";
+  document.getElementById("create-teacher-form").style.display = "block";
+  document.getElementById("update-teacher-form").style.display = "block";
+  document.getElementById("delete-teacher-form").style.display = "block";
+  document.getElementById("show-teachers-form").style.display = "block";
+  document.getElementById("teachers-list-container").style.display = "block";
+}
+</script>
+
+			<!-- Create Student Form -->
+			<form id="create-student-form" action="http://localhost:8080/api/students" method="POST">
+				<div class="loginInputsContainer">
+					<label for="name">Name:</label>
+					<input type="text" id="name" name="name" required>
+				</div>
+				<div class="loginInputsContainer">
+					<label for="email">email:</label>
+					<input type="text" id="email" name="email" required>
+                </div>
+				<div class="loginButtonContainer">
+					<button type="submit" value="submit">Create Student</button>
+				</div>
+			</form>
+            <script>
+            document.getElementById("create-student-form").addEventListener("submit", (event)=>{
+                event.preventDefault();
+                let StudentName = document.getElementById("name").value;
+                let StudentEmail = document.getElementById("email").value;
+                console.log(StudentName, StudentEmail);
+                let NewStudent = {name:StudentName, email: StudentEmail}
+                let requestConfig ={
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        //"Authorization": ""
+                    },
+                    body: JSON.stringify(NewStudent)
+                }
+                fetch("http://localhost:8080/api/students", requestConfig)
+                .then((response)=> response.json())
+                .then((parsedResponse)=>{console.log(parsedResponse);})
+                .catch((error)=>{console.log(error);})
+            });
+
+
+            
+            </script>
+            
+			<!-- Update Student Form -->
+			<form id="update-student-form" action="http://localhost:8080/api/students/{{id}}" method="PUT">
+				<div class="loginInputsContainer">
+					<label for="update-id">Student ID:</label>
+					<input type="text" id="update-id" name="id" required>
+				</div>
+				<div class="loginInputsContainer">
+					<label for="update-name">Name:</label>
+					<input type="text" id="update-name" name="name" required>
+				</div>
+				<div class="loginInputsContainer">
+					<label for="update-email">email:</label>
+					<input type="text" id="update-email" name="email" required>
+				</div>
+				
+				<div class="loginButtonContainer">
+					<button type="submit" value="submit">Update Student</button>
+				</div>
+			</form>
+            <script>
+                document.getElementById("update-student-form").addEventListener("submit", (event)=>{
+    event.preventDefault();
+    let UStudentId = document.getElementById("update-id").value;
+    let UStudentName = document.getElementById("update-name").value;
+    let UStudentEmail = document.getElementById("update-email").value;
+    console.log(UStudentId, UStudentName, UStudentEmail);
+    let NewStudent = {id:UStudentId, name:UStudentName, email: UStudentEmail};
+    let requestConfig ={
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            //"Authorization": ""
+        },
+        body: JSON.stringify(NewStudent)
+    };
+    fetch(`http://localhost:8080/api/students/${UStudentId}`, requestConfig)
+    .then((response)=> response.json())
+    .then((parsedResponse)=>{console.log(parsedResponse);})
+    .catch((error)=>{console.log(error);})
+});
+                </script>
+
+			<!-- Delete Student Form -->
+			<form id="delete-student-form" action="http://localhost:8080/api/students/{{id}}" method="Delete">
+				<div class="loginInputsContainer">
+					<label for="delete-id">Student ID:</label>
+					<input type="number" id="delete-id" name="id" required>
+				</div>
+				<div class="loginButtonContainer">
+					<button type="submit" value="submit">Delete Student</button>
+				</div>
+			</form>
+            <script>
+                document.getElementById("delete-student-form").addEventListener("submit", (event)=>{
+                    event.preventDefault();
+                    let UStudentId = document.getElementById("delete-id").value;
+                    console.log(UStudentId);
+                    let requestConfig ={
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            //"Authorization": ""
+                        }
+                    }
+                    fetch(`http://localhost:8080/api/students/${UStudentId}`, requestConfig)
+                    .then((response)=> response.json())
+                    .then((parsedResponse)=>{console.log(parsedResponse);})
+                    .catch((error)=>{console.log(error);})
+                });
+            </script>
+            <!-- Show All Students Form -->
+            <form id="show-students-form" action="http://localhost:8080/api/students" method="GET">
+            <div class="loginButtonContainer">
+            <button type="submit" value="submit">Show All Students</button>
+             </div>
+            </form>
+           
+            <div id="student-list-container"></div>            
+            <script> 
+                const showStudentsForm = document.getElementById("show-students-form");
+                
+                showStudentsForm.addEventListener("submit", (event) => {
+                  event.preventDefault();
+                
+                  fetch("http://localhost:8080/api/students")
+                    .then((response) => response.json())
+                    .then((students) => {
+                      // Manipulate the DOM to display the list of student
+                
+                      const table = document.createElement("table");
+                      
+                      students.forEach((student) => {
+                        const row = document.createElement("tr");
+                        
+                        const idCell = document.createElement("td");
+                        idCell.textContent = student.id;
+                        row.appendChild(idCell);
+                        
+                        const nameCell = document.createElement("td");
+                        nameCell.textContent = student.name;
+                        row.appendChild(nameCell);
+                        
+                        const emailCell = document.createElement("td");
+                        emailCell.textContent = student.email;
+                        row.appendChild(emailCell);
+                        
+                        table.appendChild(row);
+                      });
+                      
+                      // Append the table to a container element on the webpage
+                      const container = document.getElementById("student-list-container");
+                      container.innerHTML = "";
+                      container.appendChild(table);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                });
+                </script>
+        
+            
+            <!-- Create Teacher Form -->
+			<form id="create-teacher-form"  action="http://localhost:8080/api/teacher" method="POST">
+				<div class="loginInputsContainer">
+					<label for="name">Name:</label>
+					<input type="text" id="name1" name="name" required>
+				</div>
+				<div class="loginInputsContainer">
+					<label for="email">email:</label>
+					<input type="text" id="email1" name="email" required>
+                </div>
+				<div class="loginButtonContainer">
+					<button type="submit" value="submit">Create Teacher</button>
+				</div>
+			</form>
+            <script>
+                document.getElementById("create-teacher-form").addEventListener("submit", (event)=>{
+                    event.preventDefault();
+                    let teacherName = document.getElementById("name1").value;
+                    let teacherEmail = document.getElementById("email1").value;
+                    console.log(teacherName, teacherEmail);
+                    let NewTeacher = {name: teacherName, email: teacherEmail}
+                    let requestConfig ={
+                        method: "POST",
+                        headers: { 
+                            "Content-Type": "application/json",
+                            //"Authorization": ""
+                        },
+                        body: JSON.stringify(NewTeacher)
+                    }
+                    fetch("http://localhost:8080/api/teacher", requestConfig)
+                    .then((response)=> response.json())
+                    .then((parsedResponse)=>{console.log(parsedResponse);})
+                    .catch((error)=>{console.log(error);})
+                });
+                </script>
+             <!-- Update Teacher Form -->
+			<form id="update-teacher-form" action="http://localhost:8080/api/teacher/{{id}}" method="PUT">
+				<div class="loginInputsContainer">
+					<label for="update-id">Teacher ID:</label>
+					<input type="text" id="update-id1" name="id" required>
+				</div>
+				<div class="loginInputsContainer">
+					<label for="update-name">Name:</label>
+					<input type="text" id="update-name1" name="name" required>
+				</div>
+				<div class="loginInputsContainer">
+					<label for="update-email">email:</label>
+					<input type="text" id="update-email1" name="email" required>
+				</div>
+				
+				<div class="loginButtonContainer">
+					<button type="submit" value="submit">Update Teacher</button>
+				</div>
+			</form>
+            <script>
+                document.getElementById("update-teacher-form").addEventListener("submit", (event)=>{
+    event.preventDefault();
+    let UteacherId = document.getElementById("update-id1").value;
+    let UteacherName = document.getElementById("update-name1").value;
+    let UteacherEmail = document.getElementById("update-email1").value;
+    console.log(UteacherId, UteacherName, UteacherEmail);
+    let Newteacher = {id:UteacherId, name:UteacherName, email: UteacherEmail};
+    let requestConfig ={
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            //"Authorization": ""
+        },
+        body: JSON.stringify(Newteacher)
+    };
+    fetch(`http://localhost:8080/api/teacher/${UteacherId}`, requestConfig)
+    .then((response)=> response.json())
+    .then((parsedResponse)=>{console.log(parsedResponse);})
+    .catch((error)=>{console.log(error);})
+});
+
+
+                </script>
+            <!-- Delete Teacher Form -->
+<form id="delete-teacher-form" action="http://localhost:8080/api/teacher/{{id}}" method="PUT">
+    <div class="loginInputsContainer">
+        <label for="delete-id">Teacher ID:</label>
+        <input type="number" id="delete-id1" name="id" required>
+    </div>
+    <div class="loginButtonContainer">
+        <button type="submit" value="submit">Delete Teacher</button>
+    </div>
+</form>
+
+<script>
+    document.getElementById("delete-teacher-form").addEventListener("submit", (event)=>{
+        event.preventDefault();
+        let UteacherId = document.getElementById("delete-id1").value;
+        console.log(UteacherId);
+        let requestConfig ={
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                //"Authorization": ""
+            }
+        }
+        fetch(`http://localhost:8080/api/teacher/${UteacherId}`, requestConfig)
+        .then((response)=> response.json())
+        .then((parsedResponse)=>{console.log(parsedResponse);})
+        .catch((error)=>{console.log(error);})
+    });
+</script>
+
+           <!-- Show All Teachers Form -->
+<form id="show-teachers-form">
+  <div class="loginButtonContainer">
+    <button type="submit" value="submit">Show All Teachers</button>
+  </div>
+</form>
+<div id="teachers-list-container"></div>
+<script>
+  const showTeachersForm = document.getElementById("show-teachers-form");
+
+  showTeachersForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    fetch("http://localhost:8080/api/teacher")
+      .then((response) => response.json())
+      .then((teachers) => {
+        // Manipulate the DOM to display the list of teachers
+
+        const table = document.createElement("table");
+
+        teachers.forEach((teacher) => {
+          const row = document.createElement("tr");
+
+          const idCell = document.createElement("td");
+          idCell.textContent = teacher.id;
+          row.appendChild(idCell);
+
+          const nameCell = document.createElement("td");
+          nameCell.textContent = teacher.name;
+          row.appendChild(nameCell);
+
+          const emailCell = document.createElement("td");
+          emailCell.textContent = teacher.email;
+          row.appendChild(emailCell);
+
+          table.appendChild(row);
+        });
+
+        // Append the table to a container element on the webpage
+        const container = document.getElementById("teachers-list-container");
+        container.innerHTML = "";
+        container.appendChild(table);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+</script>
+
+		</div>
+	</div>
+
+	<script>
+		
+    
+
+
