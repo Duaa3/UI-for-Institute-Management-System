@@ -1,39 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" type="text/css" href="login.css">
-  </head>
-  <body>
-    <h1>Login Page</h1>
-    <form id="login-form">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required>
-      <br>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
-      <br>
-      <button type="submit">Login</button>
-    </form>
-    <script>
-      const loginForm = document.getElementById("login-form");
-      
-      loginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        
-        // Perform authentication check here
-        if (username === "user1" && password === "123u") {
-          // Redirect to index.html
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" type="text/css" href="login.css">
+</head>
+<body>
+  <h1>Login Page</h1>
+  <form id="login-form" autocomplete="off" action="http://localhost:8080/api/students" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <button type="submit">Login</button>
+  </form>
+  <script>
+    const loginForm = document.getElementById("login-form");
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const authHeader = "Basic " + btoa(username + ":" + password);
+      const headers = new Headers();
+      headers.append("Authorization", authHeader);
+
+      fetch("http://localhost:8080/api/students", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Basic " + btoa(username + ":" + password)
+  },
+  body: JSON.stringify({
+    username: username,
+    password: password
+  })
+})
+
+      .then(response => {
+        if (response.status === 200) {
           window.location.href = "index.html";
         } else {
           alert("Invalid username or password");
         }
-      });
-    </script>
-  </body>
+      })
+      .catch(error => console.error(error));
+    });
+  </script>
+</body>
 </html>
+
+
