@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Service // Indicates that this class is a service and will be managed by Spring framework.
+@Service // Indicates  this class is a service and will be managed by Spring framework.
 public class TeacherService {
     public List<Teacher> listOfTeacher = new CopyOnWriteArrayList<>();
 

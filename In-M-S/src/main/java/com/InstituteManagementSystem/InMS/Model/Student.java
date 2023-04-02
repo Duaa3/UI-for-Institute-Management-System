@@ -1,7 +1,10 @@
 package com.InstituteManagementSystem.InMS.Model;
-// Defining Teacher class with four public instance variables
-public class Teacher {
+// Defining Student class with 3 public instance variables
+
+public class Student {
     public int id;
+
     public String name;
     public String email;
+
 }

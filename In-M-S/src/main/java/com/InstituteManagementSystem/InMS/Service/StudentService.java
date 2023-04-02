@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 public class StudentService {
 
-    // Method to get all students
+    // Method get all students
     public List<Student> getAllStudents() {
 
         return listOfStudent;

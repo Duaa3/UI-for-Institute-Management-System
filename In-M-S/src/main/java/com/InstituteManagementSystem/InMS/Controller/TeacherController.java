@@ -13,7 +13,7 @@ import java.util.List;
 public class TeacherController {
     @Autowired
     private TeacherService teacherService;
-    // GET request to retrieve all teachers
+    // GET to retrieve all teachers
     @GetMapping
     public List<Teacher> getTeacher(){
         return teacherService.getAllTeacher();

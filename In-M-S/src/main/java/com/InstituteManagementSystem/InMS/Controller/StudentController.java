@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping(path = "/api/students")// Mapping this controller to the "/api/students" path
+@RequestMapping(path = "/api/students")// Mapping this controller to  "/api/students" path
 public class StudentController {
-    // Injecting the StudentService dependency into the controller
+    // Injecting the StudentService dependency into  controller
     @Autowired
     private StudentService studentService;
     // GET request to retrieve all students
