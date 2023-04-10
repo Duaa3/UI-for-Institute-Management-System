@@ -43,6 +43,9 @@ function showTeacherForms() {
   document.getElementById("show-teachers-form").style.display = "block";
   document.getElementById("teachers-list-container").style.display = "block";
 }
+const username = localStorage.getItem("username");
+const password = localStorage.getItem("password");
+
 </script>
 
 			<!-- Create Student Form -->
@@ -70,13 +73,14 @@ function showTeacherForms() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        //"Authorization": ""
+                        "Authorization": `Basic ${btoa(`${username}:${password}`)}`
                     },
                     body: JSON.stringify(NewStudent)
                 }
                 fetch("http://localhost:8080/api/students", requestConfig)
                 .then((response)=> response.json())
-                .then((parsedResponse)=>{console.log(parsedResponse);})
+                .then((parsedResponse)=>{console.log(parsedResponse);
+                    alert("Student created successfully!");})
                 .catch((error)=>{console.log(error);})
             });
 
@@ -115,13 +119,14 @@ function showTeacherForms() {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            //"Authorization": ""
+            "Authorization": `Basic ${btoa(`${username}:${password}`)}`
         },
         body: JSON.stringify(NewStudent)
     };
     fetch(`http://localhost:8080/api/students/${UStudentId}`, requestConfig)
     .then((response)=> response.json())
-    .then((parsedResponse)=>{console.log(parsedResponse);})
+    .then((parsedResponse)=>{console.log(parsedResponse);
+        alert("Student Update successfully!");})
     .catch((error)=>{console.log(error);})
 });
                 </script>
@@ -145,12 +150,13 @@ function showTeacherForms() {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
-                            //"Authorization": ""
+                            "Authorization": `Basic ${btoa(`${username}:${password}`)}`
                         }
                     }
                     fetch(`http://localhost:8080/api/students/${UStudentId}`, requestConfig)
                     .then((response)=> response.json())
-                    .then((parsedResponse)=>{console.log(parsedResponse);})
+                    .then((parsedResponse)=>{console.log(parsedResponse);
+                        alert("Student Delete successfully!");})
                     .catch((error)=>{console.log(error);})
                 });
             </script>
@@ -164,44 +170,53 @@ function showTeacherForms() {
             <div id="student-list-container"></div>            
             <script> 
                 const showStudentsForm = document.getElementById("show-students-form");
-                
-                showStudentsForm.addEventListener("submit", (event) => {
-                  event.preventDefault();
-                
-                  fetch("http://localhost:8080/api/students")
-                    .then((response) => response.json())
-                    .then((students) => {
-                      // Manipulate the DOM to display the list of student
-                
-                      const table = document.createElement("table");
-                      
-                      students.forEach((student) => {
-                        const row = document.createElement("tr");
-                        
-                        const idCell = document.createElement("td");
-                        idCell.textContent = student.id;
-                        row.appendChild(idCell);
-                        
-                        const nameCell = document.createElement("td");
-                        nameCell.textContent = student.name;
-                        row.appendChild(nameCell);
-                        
-                        const emailCell = document.createElement("td");
-                        emailCell.textContent = student.email;
-                        row.appendChild(emailCell);
-                        
-                        table.appendChild(row);
-                      });
-                      
-                      // Append the table to a container element on the webpage
-                      const container = document.getElementById("student-list-container");
-                      container.innerHTML = "";
-                      container.appendChild(table);
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
-                });
+
+showStudentsForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const requestConfig = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Basic ${btoa(`${username}:${password}`)}`
+    }
+  };
+
+  fetch("http://localhost:8080/api/students", requestConfig)
+    .then((response) => response.json())
+    .then((students) => {
+      // Manipulate the DOM to display the list of student
+
+      const table = document.createElement("table");
+
+      students.forEach((student) => {
+        const row = document.createElement("tr");
+
+        const idCell = document.createElement("td");
+        idCell.textContent = student.id;
+        row.appendChild(idCell);
+
+        const nameCell = document.createElement("td");
+        nameCell.textContent = student.name;
+        row.appendChild(nameCell);
+
+        const emailCell = document.createElement("td");
+        emailCell.textContent = student.email;
+        row.appendChild(emailCell);
+
+        table.appendChild(row);
+      });
+
+      // Append the table to a container element on the webpage
+      const container = document.getElementById("student-list-container");
+      container.innerHTML = "";
+      container.appendChild(table);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
                 </script>
         
             
@@ -230,13 +245,15 @@ function showTeacherForms() {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
-                            //"Authorization": ""
+                            "Authorization": `Basic ${btoa(`${username}:${password}`)}`
                         },
                         body: JSON.stringify(NewTeacher)
                     }
                     fetch("http://localhost:8080/api/teacher", requestConfig)
                     .then((response)=> response.json())
-                    .then((parsedResponse)=>{console.log(parsedResponse);})
+                    .then((parsedResponse)=>{console.log(parsedResponse);
+                        alert("Teacher Create successfully!");
+                    })
                     .catch((error)=>{console.log(error);})
                 });
                 </script>
@@ -271,13 +288,14 @@ function showTeacherForms() {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            //"Authorization": ""
+            "Authorization": `Basic ${btoa(`${username}:${password}`)}`
         },
         body: JSON.stringify(Newteacher)
     };
     fetch(`http://localhost:8080/api/teacher/${UteacherId}`, requestConfig)
     .then((response)=> response.json())
-    .then((parsedResponse)=>{console.log(parsedResponse);})
+    .then((parsedResponse)=>{console.log(parsedResponse);
+        alert("Teacher Update successfully!");})
     .catch((error)=>{console.log(error);})
 });
 
@@ -303,12 +321,13 @@ function showTeacherForms() {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": ""
+                "Authorization": `Basic ${btoa(`${username}:${password}`)}`
             }
         }
         fetch(`http://localhost:8080/api/teacher/${UteacherId}`, requestConfig)
         .then((response)=> response.json())
-        .then((parsedResponse)=>{console.log(parsedResponse);})
+        .then((parsedResponse)=>{console.log(parsedResponse);
+            alert("Teacher Delete successfully!");})
         .catch((error)=>{console.log(error);})
     });
 </script>
@@ -325,8 +344,15 @@ function showTeacherForms() {
 
   showTeachersForm.addEventListener("submit", (event) => {
     event.preventDefault();
+    const requestConfig = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Basic ${btoa(`${username}:${password}`)}`
+    }
+  };
 
-    fetch("http://localhost:8080/api/teacher")
+    fetch("http://localhost:8080/api/teacher", requestConfig)
       .then((response) => response.json())
       .then((teachers) => {
         // Manipulate the DOM to display the list of teachers
